@@ -219,4 +219,28 @@ export function injectDownloadButton(storage: StorageAdapter) {
   };
 
   btn.addEventListener("click", handleClick);
+
+  // Store cleanup function on the button for later removal
+  (btn as any).__illogger_cleanup = () => {
+    btn.removeEventListener("mousedown", handleMouseDown);
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+    window.removeEventListener("resize", onWindowResize);
+    btn.removeEventListener("click", handleClick);
+  };
+}
+
+export function withdrawDownloadButton() {
+  if (typeof document === "undefined") return; // skip for Node
+
+  const btn = document.getElementById("illogger-download-btn");
+  if (!btn) return;
+
+  // Clean up event listeners if cleanup function exists
+  if ((btn as any).__illogger_cleanup) {
+    (btn as any).__illogger_cleanup();
+  }
+
+  // Remove button from DOM
+  btn.remove();
 }

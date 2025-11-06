@@ -2,7 +2,8 @@ import { ILogger, getLogger } from "iLogger";
 
 // Initialize iLogger
 const logger = ILogger();
-logger.init();
+logger.injectButton();
+// Don't auto-inject button - let user control it via UI
 
 // Create multiple logger instances
 const appLogger = logger.createInstance("app", { timeStamps: true });
@@ -95,6 +96,35 @@ window.logToAll = () => {
     });
     updateStats();
 };
+
+// Button management functions
+window.injectDownloadButton = () => {
+    logger.injectButton();
+    appLogger.writeLog("🔘 Download button injected");
+    updateStats();
+    updateButtonState();
+};
+
+window.withdrawDownloadButton = () => {
+    logger.withdrawButton();
+    appLogger.writeLog("🔘 Download button withdrawn");
+    updateStats();
+    updateButtonState();
+};
+
+function updateButtonState() {
+    const btn = document.getElementById("illogger-download-btn");
+    const injectBtn = document.getElementById("injectBtn");
+    const withdrawBtn = document.getElementById("withdrawBtn");
+
+    if (btn) {
+        injectBtn.disabled = true;
+        withdrawBtn.disabled = false;
+    } else {
+        injectBtn.disabled = false;
+        withdrawBtn.disabled = true;
+    }
+}
 
 // Configuration functions
 window.toggleConsoleLogging = () => {
@@ -194,6 +224,9 @@ window.simulateWorkflow = () => {
     // Update stats after all logs
     setTimeout(updateStats, 3000);
 };
+
+// Initialize button state
+updateButtonState();
 
 // Log initial message
 appLogger.writeLog("🚀 iLogger demo initialized");

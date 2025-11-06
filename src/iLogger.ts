@@ -1,6 +1,6 @@
 import { LoggerInstance } from "./loggerInstance";
 import { StorageAdapter } from "./storageAdapter";
-import { injectDownloadButton } from "./uiButton";
+import { injectDownloadButton, withdrawDownloadButton } from "./uiButton";
 
 class ILoggerCore {
   private instances: Record<string, LoggerInstance> = {};
@@ -27,8 +27,12 @@ class ILoggerCore {
     Object.values(this.instances).forEach((i) => i.setConsoleLogging(enabled));
   }
 
-  init() {
+  injectButton() {
     injectDownloadButton(this.storage);
+  }
+
+  withdrawButton() {
+    withdrawDownloadButton();
   }
 
   async clear() {

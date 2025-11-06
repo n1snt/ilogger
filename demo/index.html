@@ -197,8 +197,8 @@
 
         <div class="info">
             <p><strong>💡 Tip:</strong> All logs are stored in sessionStorage and persist across page reloads.</p>
-            <p><strong>📥 Download:</strong> Click the "⬇️ Logs" button in the bottom-right corner to download all logs
-                as a ZIP file.</p>
+            <p><strong>📥 Download:</strong> Use the "Inject Download Button" control to add a floating download button.
+                Click it to download all logs as a ZIP file.</p>
         </div>
 
         <div class="controls">
@@ -224,6 +224,13 @@
                 </div>
                 <button onclick="logWithSelected()">Log with Selected Logger</button>
                 <button onclick="logToAll()">Log to All Loggers</button>
+            </div>
+
+            <div class="control-group">
+                <h3>🔘 Download Button</h3>
+                <button onclick="injectDownloadButton()" class="success" id="injectBtn">Inject Download Button</button>
+                <button onclick="withdrawDownloadButton()" class="secondary" id="withdrawBtn" disabled>Withdraw Download
+                    Button</button>
             </div>
 
             <div class="control-group">
