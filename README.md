@@ -9,7 +9,7 @@
 - **Timestamps**: Optional timestamp support for all log entries
 - **Download Logs**: Download logs as a single file or grouped by logger (ZIP)
 - **Programmatic Download**: Trigger log downloads programmatically or from console
-- **UI Button**: Floating, draggable download button for easy log access
+- **UI Button**: Floating, draggable download button for easy log access with customizable text and styling
 - **Performance Optimized**: Batched writes to IndexedDB for high-frequency logging
 - **Auto-trimming**: Automatically maintains maximum log limit by removing oldest entries
 - **Runtime Configuration**: Enable/disable logging, timestamps, and console output at runtime
@@ -63,6 +63,7 @@ ILogger(options?: {
   enabled?: boolean;     // Enable/disable logging globally (default: true)
   sessionSeparator?: boolean;  // Add session separators for new tabs (default: true)
   sessionSeparatorMessage?: string;  // Custom message for session separators (optional)
+  buttonOptions?: ButtonOptions;  // Customize download button text and styling (optional)
 })
 ```
 
@@ -76,6 +77,7 @@ ILogger(options?: {
 - **`enabled`** (boolean, default: `true`): Global enable/disable flag for all logging operations
 - **`sessionSeparator`** (boolean, default: `true`): Whether to automatically add session separators when a new browser tab/window is opened. Session separators help distinguish between different browser sessions in your log files.
 - **`sessionSeparatorMessage`** (string, optional): Custom message to display in session separators. If not provided, defaults to `"New Session"`. The separator will include a timestamp if timestamps are enabled.
+- **`buttonOptions`** (ButtonOptions, optional): Customize the download button's text and styling. See [Button Customization](#button-customization) section for details.
 
 ### Core Methods
 
@@ -247,20 +249,110 @@ button.addEventListener('click', async () => {
 
 ### Download Button Methods
 
-#### `injectButton(): void`
+#### `injectButton(buttonOptions?: ButtonOptions): void`
 
 Injects a floating, draggable download button into the page. The button position is saved in localStorage and restored on subsequent page loads.
+
+**Parameters:**
+- `buttonOptions` (ButtonOptions, optional): Customize button text and styling. If not provided, uses options from constructor or defaults.
 
 **Features:**
 - Draggable button that can be repositioned anywhere on the page
 - Position persists across page reloads
 - Automatically constrains to viewport bounds
 - Adjusts position on window resize
+- Customizable text and styling
 
 **Example:**
 ```javascript
-logger.injectButton(); // Add download button to page
+// Use default button
+logger.injectButton();
+
+// Customize button when injecting
+logger.injectButton({
+  text: "Download Logs",
+  style: {
+    background: "#007bff",
+    color: "#fff",
+    borderRadius: "12px"
+  }
+});
 ```
+
+#### Button Customization
+
+You can customize the download button's appearance and text using the `ButtonOptions` interface:
+
+```typescript
+interface ButtonOptions {
+  text?: string;              // Button text (default: "iLogger")
+  style?: ButtonStyleOptions; // CSS style properties
+}
+
+interface ButtonStyleOptions {
+  background?: string;        // Background color
+  color?: string;             // Text color
+  padding?: string;           // Padding (e.g., "8px 14px")
+  borderRadius?: string;      // Border radius (e.g., "8px")
+  fontSize?: string;          // Font size (e.g., "14px")
+  border?: string;            // Border (e.g., "none" or "1px solid #ccc")
+  cursor?: string;            // Cursor style (default: "grab")
+  zIndex?: string;            // Z-index (default: "99999")
+  opacity?: string;           // Opacity (default: "0.8")
+  width?: string;             // Button width (e.g., "80px")
+  height?: string;            // Button height (e.g., "40px")
+  [key: string]: string | undefined; // Any other CSS property
+}
+```
+
+**Customization Examples:**
+
+```javascript
+// Customize via constructor
+const logger = ILogger({
+  buttonOptions: {
+    text: "Export Logs",
+    style: {
+      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      color: "#fff",
+      borderRadius: "20px",
+      padding: "10px 20px",
+      fontSize: "16px",
+      fontWeight: "bold"
+    }
+  }
+});
+logger.injectButton();
+
+// Override when injecting
+logger.injectButton({
+  text: "Download",
+  style: {
+    background: "#28a745",
+    color: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+  }
+});
+
+// Minimal customization - just change text
+logger.injectButton({
+  text: "📥 Export"
+});
+
+// Custom styling only
+logger.injectButton({
+  style: {
+    background: "#ff6b6b",
+    color: "#fff",
+    borderRadius: "50%",
+    width: "60px",
+    height: "60px"
+  }
+});
+```
+
+**Note:** Custom styles are merged with default styles, so you only need to specify the properties you want to change. The button maintains its draggable functionality regardless of customization.
 
 #### `withdrawButton(): void`
 
@@ -526,8 +618,13 @@ appLogger.setTimestamps(true);   // But keep them for app logger
 const stats = await logger.getStats();
 console.log(`Total logs: ${stats.totalLogs}`);
 
-// Inject download button
+// Inject download button (with optional customization)
 logger.injectButton();
+// Or with custom styling:
+// logger.injectButton({
+//   text: "Download Logs",
+//   style: { background: "#007bff", color: "#fff" }
+// });
 
 // Enable console interface for easy access
 logger.enableConsoleInterface();
