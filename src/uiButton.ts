@@ -31,7 +31,7 @@ function savePosition(top: number, left: number) {
   }
 }
 
-export function injectDownloadButton(storage: StorageAdapter) {
+export function injectDownloadButton(storage: StorageAdapter, singleFile = false) {
   if (typeof document === "undefined") return; // skip for Node
   if (document.getElementById("illogger-download-btn")) return;
 
@@ -203,19 +203,34 @@ export function injectDownloadButton(storage: StorageAdapter) {
     }
 
     const logs = await storage.getAll();
-    const grouped = logs.reduce((acc: any, log: any) => {
-      (acc[log.name] ||= []).push(log);
-      return acc;
-    }, {});
-    const zip = new JSZip();
-    Object.entries(grouped).forEach(([name, entries]: any) => {
-      const content = entries
-        .map((e: any) => `[${e.timestamp}] ${e.message}`)
+
+    if (singleFile) {
+      // Create a single log file with all logs
+      const content = logs
+        .map((log: any) => {
+          const loggerPrefix = log.name ? `[${log.name}] ` : '';
+          const timestamp = log.timestamp ? `[${log.timestamp}] ` : '';
+          return `${timestamp}${loggerPrefix}${log.message}`;
+        })
         .join("\n");
-      zip.file(`${name}.log`, content);
-    });
-    const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, "illogger-logs.zip");
+      const blob = new Blob([content], { type: "text/plain" });
+      saveAs(blob, "illogger-logs.log");
+    } else {
+      // Create multiple files grouped by logger name (original behavior)
+      const grouped = logs.reduce((acc: any, log: any) => {
+        (acc[log.name] ||= []).push(log);
+        return acc;
+      }, {});
+      const zip = new JSZip();
+      Object.entries(grouped).forEach(([name, entries]: any) => {
+        const content = entries
+          .map((e: any) => `[${e.timestamp}] ${e.message}`)
+          .join("\n");
+        zip.file(`${name}.log`, content);
+      });
+      const blob = await zip.generateAsync({ type: "blob" });
+      saveAs(blob, "illogger-logs.zip");
+    }
   };
 
   btn.addEventListener("click", handleClick);

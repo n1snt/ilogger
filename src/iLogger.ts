@@ -6,9 +6,11 @@ class ILoggerCore {
   private instances: Record<string, LoggerInstance> = {};
   private storage: StorageAdapter;
   private consoleLogging = false;
+  private singleFile = false;
 
-  constructor(options: { maxLogs?: number } = {}) {
+  constructor(options: { maxLogs?: number; singleFile?: boolean } = {}) {
     this.storage = new StorageAdapter("__illogger__", options.maxLogs ?? 5000);
+    this.singleFile = options.singleFile ?? false;
   }
 
   createInstance(name: string, options: { timeStamps?: boolean } = {}) {
@@ -32,7 +34,7 @@ class ILoggerCore {
   }
 
   injectButton() {
-    injectDownloadButton(this.storage);
+    injectDownloadButton(this.storage, this.singleFile);
   }
 
   withdrawButton() {
@@ -64,7 +66,7 @@ class ILoggerCore {
 
 let _illogger: ILoggerCore | null = null;
 
-export function ILogger(options?: { maxLogs?: number }) {
+export function ILogger(options?: { maxLogs?: number; singleFile?: boolean }) {
   if (!_illogger) _illogger = new ILoggerCore(options);
   return _illogger;
 }
