@@ -196,9 +196,11 @@
         <p class="subtitle">Interactive Logger with Persistent Session Storage</p>
 
         <div class="info">
-            <p><strong>💡 Tip:</strong> All logs are stored in sessionStorage and persist across page reloads.</p>
+            <p><strong>💡 Tip:</strong> All logs are stored in IndexedDB and persist across page reloads.</p>
             <p><strong>📥 Download:</strong> Use the "Inject Download Button" control to add a floating download button.
                 Click it to download all logs as a ZIP file.</p>
+            <p><strong>🖥️ Console Capture:</strong> Enable "Capture Console Output" to automatically log all
+                console.log, console.error, console.warn, etc. to the log file.</p>
         </div>
 
         <div class="controls">
@@ -209,6 +211,7 @@
                 <button onclick="logError()">Log Error</button>
                 <button onclick="logObject()">Log Object</button>
                 <button onclick="logArray()">Log Array</button>
+                <button onclick="testConsoleOutput()">Test Console Output</button>
             </div>
 
             <div class="control-group">
@@ -238,6 +241,10 @@
                 <div class="checkbox-group">
                     <input type="checkbox" id="consoleLogging" onchange="toggleConsoleLogging()">
                     <label for="consoleLogging">Enable Console Logging</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="consoleInterception" onchange="toggleConsoleInterception()">
+                    <label for="consoleInterception">Capture Console Output</label>
                 </div>
                 <button onclick="clearLogs()" class="danger">Clear All Logs</button>
                 <button onclick="simulateErrors()" class="danger">Simulate Errors</button>

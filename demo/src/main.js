@@ -136,6 +136,29 @@ window.toggleConsoleLogging = () => {
     updateStats();
 };
 
+window.toggleConsoleInterception = () => {
+    const enabled = document.getElementById("consoleInterception").checked;
+    if (enabled) {
+        logger.enableConsoleInterception();
+        appLogger.writeLog("🖥️ Console interception enabled - all console output will be captured");
+    } else {
+        logger.disableConsoleInterception();
+        appLogger.writeLog("🖥️ Console interception disabled");
+    }
+    updateStats();
+};
+
+// Add a test function to demonstrate console interception
+window.testConsoleOutput = () => {
+    console.log("This is a console.log message");
+    console.info("This is a console.info message");
+    console.warn("This is a console.warn message");
+    console.error("This is a console.error message");
+    console.debug("This is a console.debug message");
+    appLogger.writeLog("📝 Test console output sent - check logs if interception is enabled");
+    updateStats();
+};
+
 window.clearLogs = async () => {
     if (confirm("Are you sure you want to clear all logs?")) {
         await logger.clear();

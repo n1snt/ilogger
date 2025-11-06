@@ -13,6 +13,7 @@
 - **Performance Optimized**: Batched writes to IndexedDB for high-frequency logging
 - **Auto-trimming**: Automatically maintains maximum log limit by removing oldest entries
 - **Runtime Configuration**: Enable/disable logging, timestamps, and console output at runtime
+- **Console Interception**: Capture all console output (console.log, console.error, etc.) and write to log files
 
 ## Installation
 
@@ -118,6 +119,47 @@ Enable or disable console logging for all logger instances. When enabled, logs a
 ```javascript
 logger.setConsoleLogging(true);  // Enable console output
 logger.setConsoleLogging(false); // Disable console output
+```
+
+#### `enableConsoleInterception(): void`
+
+Enable console interception to capture all console output (console.log, console.error, console.warn, console.info, console.debug, console.trace) and automatically write them to the log file. This allows you to capture console output from your application and third-party libraries.
+
+**Note:** When enabled, intercepted console calls are stored with the logger name `__console__` and include the log level prefix (e.g., `[LOG]`, `[ERROR]`, `[WARN]`).
+
+**Example:**
+```javascript
+logger.enableConsoleInterception();
+
+// Now all console output will be captured
+console.log("This will be captured");
+console.error("This error will be captured");
+console.warn("This warning will be captured");
+
+// These will appear in your downloaded logs under the "__console__" logger
+```
+
+#### `disableConsoleInterception(): void`
+
+Disable console interception and restore the original console methods.
+
+**Example:**
+```javascript
+logger.disableConsoleInterception();
+// Console methods are now restored to their original behavior
+```
+
+#### `isConsoleInterceptionEnabled(): boolean`
+
+Check if console interception is currently enabled.
+
+**Returns:** `boolean` - `true` if console interception is enabled, `false` otherwise
+
+**Example:**
+```javascript
+if (logger.isConsoleInterceptionEnabled()) {
+  console.log("Console interception is active");
+}
 ```
 
 #### `setTimestamps(enabled: boolean): void`
@@ -429,10 +471,11 @@ illogger-logs.zip
 ├── app.log
 ├── api.log
 ├── ui.log
-└── auth.log
+├── auth.log
+└── __console__.log  (if console interception is enabled)
 ```
 
-Each file contains logs from that specific logger instance, with timestamps if enabled.
+Each file contains logs from that specific logger instance, with timestamps if enabled. If console interception is enabled, all captured console output will be in the `__console__.log` file with log level prefixes (e.g., `[LOG]`, `[ERROR]`, `[WARN]`).
 
 ## Complete Example
 
@@ -472,6 +515,10 @@ logger.injectButton();
 // Enable console interface for easy access
 logger.enableConsoleInterface();
 // Now you can type 'downloadLogs()' in the browser console
+
+// Enable console interception to capture all console output
+logger.enableConsoleInterception();
+// Now all console.log, console.error, etc. will be captured to logs
 
 // Or trigger download programmatically
 await logger.downloadLogs();
