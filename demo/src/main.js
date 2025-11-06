@@ -1,7 +1,7 @@
 import { ILogger, getLogger } from "iLogger";
 
 // Initialize iLogger
-const logger = ILogger();
+const logger = ILogger({ maxLogs: 500 });
 logger.injectButton();
 // Don't auto-inject button - let user control it via UI
 

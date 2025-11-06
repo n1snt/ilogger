@@ -4,8 +4,12 @@ import { injectDownloadButton, withdrawDownloadButton } from "./uiButton";
 
 class ILoggerCore {
   private instances: Record<string, LoggerInstance> = {};
-  private storage = new StorageAdapter();
+  private storage: StorageAdapter;
   private consoleLogging = false;
+
+  constructor(options: { maxLogs?: number } = {}) {
+    this.storage = new StorageAdapter("__illogger__", options.maxLogs ?? 5000);
+  }
 
   createInstance(name: string, options: { timeStamps?: boolean } = {}) {
     const instance = new LoggerInstance(
@@ -45,14 +49,23 @@ class ILoggerCore {
     return {
       totalLogs: logs.length,
       activeLoggers: uniqueLoggers.size,
+      maxLogs: this.storage.getMaxLogs(),
     };
+  }
+
+  async setMaxLogs(maxLogs: number) {
+    await this.storage.setMaxLogs(maxLogs);
+  }
+
+  getMaxLogs(): number {
+    return this.storage.getMaxLogs();
   }
 }
 
 let _illogger: ILoggerCore | null = null;
 
-export function ILogger() {
-  if (!_illogger) _illogger = new ILoggerCore();
+export function ILogger(options?: { maxLogs?: number }) {
+  if (!_illogger) _illogger = new ILoggerCore(options);
   return _illogger;
 }
 
