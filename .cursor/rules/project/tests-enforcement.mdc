@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+
+# Test Coverage Maintenance
+
+When Cursor modifies or creates any source file (`.ts` or `.tsx`):
+
+1. **If the modified file already has related tests**
+   - Locate test files with matching names or in `__tests__/` directories:
+     - `*.test.ts`, `*.test.tsx`
+     - `*.spec.ts`, `*.spec.tsx`
+     - `__tests__/<filename>.test.ts(x)`
+   - If the logic, behavior, or output in the source file changes:
+     - Update or extend existing tests to reflect new behavior.
+   - If current tests already cover the modified code:
+     - Do nothing.
+
+2. **If the modified file has no tests yet**
+   - If the file is testable (e.g., a function, hook, component, reducer, utility, etc.):
+     - Create a new test file with appropriate coverage.
+   - Skip creating tests for trivial or non-testable files (e.g., types, constants, styles).
+
+3. **For new files**
+   - Always generate a corresponding test file unless explicitly non-testable.
+
+4. **General conventions**
+   - Use TypeScript for tests.
+   - Follow project testing framework (Vitest or Jest).
+   - Maintain consistent folder structure (`__tests__` or colocated tests).
+
+---
+
+### Example
+If Cursor modifies:
+src/utils/formatDate.ts
+
+Then Cursor should:
+- Check for `src/utils/formatDate.test.ts` or `src/utils/__tests__/formatDate.test.ts`
+- If the function signature or behavior changes → update or add relevant tests.
+- If the function is unchanged in logic → leave tests as-is.
+- If no test exists → prompt to create one.

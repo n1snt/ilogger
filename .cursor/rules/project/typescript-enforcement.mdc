@@ -5,6 +5,4 @@ alwaysApply: true
 
 When creating a new file, it MUST be in TypeScript:
 - Use `.ts` for non-React logic files
-- Use `.tsx` for React components
 - Never create `.js` or `.jsx` files for new code
-- Only modify existing `.js` files when necessary for bug fixes or minor updates
