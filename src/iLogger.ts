@@ -7,17 +7,19 @@ class ILoggerCore {
   private storage: StorageAdapter;
   private consoleLogging = false;
   private singleFile = false;
+  private timestampsEnabled = true;
 
-  constructor(options: { maxLogs?: number; singleFile?: boolean } = {}) {
+  constructor(options: { maxLogs?: number; singleFile?: boolean; timestamps?: boolean } = {}) {
     this.storage = new StorageAdapter("__illogger__", options.maxLogs ?? 5000);
     this.singleFile = options.singleFile ?? false;
+    this.timestampsEnabled = options.timestamps ?? true;
   }
 
   createInstance(name: string, options: { timeStamps?: boolean } = {}) {
     const instance = new LoggerInstance(
       name,
       this.storage,
-      options.timeStamps ?? true,
+      options.timeStamps ?? this.timestampsEnabled,
       this.consoleLogging,
     );
     this.instances[name] = instance;
@@ -33,8 +35,17 @@ class ILoggerCore {
     Object.values(this.instances).forEach((i) => i.setConsoleLogging(enabled));
   }
 
+  setTimestamps(enabled: boolean) {
+    this.timestampsEnabled = enabled;
+    Object.values(this.instances).forEach((i) => i.setTimestamps(enabled));
+  }
+
+  getTimestamps(): boolean {
+    return this.timestampsEnabled;
+  }
+
   injectButton() {
-    injectDownloadButton(this.storage, this.singleFile);
+    injectDownloadButton(this.storage, this.singleFile, () => this.timestampsEnabled);
   }
 
   withdrawButton() {
@@ -66,7 +77,7 @@ class ILoggerCore {
 
 let _illogger: ILoggerCore | null = null;
 
-export function ILogger(options?: { maxLogs?: number; singleFile?: boolean }) {
+export function ILogger(options?: { maxLogs?: number; singleFile?: boolean; timestamps?: boolean }) {
   if (!_illogger) _illogger = new ILoggerCore(options);
   return _illogger;
 }

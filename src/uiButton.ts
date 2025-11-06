@@ -31,9 +31,17 @@ function savePosition(top: number, left: number) {
   }
 }
 
-export function injectDownloadButton(storage: StorageAdapter, singleFile = false) {
+export function injectDownloadButton(
+  storage: StorageAdapter,
+  singleFile = false,
+  showTimestamps: boolean | (() => boolean) = true
+) {
   if (typeof document === "undefined") return; // skip for Node
   if (document.getElementById("illogger-download-btn")) return;
+
+  // Helper to get current timestamp setting
+  const getShowTimestamps = () =>
+    typeof showTimestamps === "function" ? showTimestamps() : showTimestamps;
 
   const btn = document.createElement("button");
   btn.id = "illogger-download-btn";
@@ -203,13 +211,14 @@ export function injectDownloadButton(storage: StorageAdapter, singleFile = false
     }
 
     const logs = await storage.getAll();
+    const shouldShowTimestamps = getShowTimestamps();
 
     if (singleFile) {
       // Create a single log file with all logs
       const content = logs
         .map((log: any) => {
           const loggerPrefix = log.name ? `[${log.name}] ` : '';
-          const timestamp = log.timestamp ? `[${log.timestamp}] ` : '';
+          const timestamp = shouldShowTimestamps && log.timestamp ? `[${log.timestamp}] ` : '';
           return `${timestamp}${loggerPrefix}${log.message}`;
         })
         .join("\n");
@@ -224,7 +233,10 @@ export function injectDownloadButton(storage: StorageAdapter, singleFile = false
       const zip = new JSZip();
       Object.entries(grouped).forEach(([name, entries]: any) => {
         const content = entries
-          .map((e: any) => `[${e.timestamp}] ${e.message}`)
+          .map((e: any) => {
+            const timestamp = shouldShowTimestamps && e.timestamp ? `[${e.timestamp}] ` : '';
+            return `${timestamp}${e.message}`;
+          })
           .join("\n");
         zip.file(`${name}.log`, content);
       });

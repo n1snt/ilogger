@@ -35,4 +35,8 @@ export class LoggerInstance {
   setConsoleLogging(enabled: boolean) {
     this.consoleLogging = enabled;
   }
+
+  setTimestamps(enabled: boolean) {
+    this.withTimestamps = enabled;
+  }
 }
