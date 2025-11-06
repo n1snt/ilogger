@@ -1,13 +1,38 @@
 {
-  "name": "ilogger",
+  "name": "iLogger",
   "version": "1.0.0",
-  "description": "ILogger (Interactive Logger)",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "iLogger (Interactive Logger), in-browser logger with persistent session storage and downloadable logs",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs --clean",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "logger",
+    "browser",
+    "debug",
+    "session",
+    "download",
+    "interactive"
+  ],
+  "author": "Nishant",
+  "license": "MIT",
+  "dependencies": {
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "lz-string": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.7",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
 }
