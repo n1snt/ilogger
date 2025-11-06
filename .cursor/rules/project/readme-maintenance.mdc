@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+---
+# README Maintenance Rule
+
+**ALWAYS update the README.md file** when making any of the following changes:
+- Adding new constructor options to `ILogger()` or new configuration parameters to any method
+- Adding, removing, or modifying any public method on `ILogger` instance, `LoggerInstance`, or global functions
+- Changing method signatures (parameters, return types) or behavior that affects users
+- Adding new features or capabilities that users can access
+- Changing how existing features work or their behavior
+- Adding or modifying exported types from `src/index.ts`
+- Changing default values of existing options
+
+Update the relevant sections in the README including API Reference, Constructor Provisions, Features list, and examples as needed.
