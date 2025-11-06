@@ -8,5 +8,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "src/__tests__",
+    "vitest.config.ts"
+  ]
 }
