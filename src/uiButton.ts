@@ -114,7 +114,7 @@ export function injectDownloadButton(
 
   const btn = document.createElement("button");
   btn.id = "illogger-download-btn";
-  btn.textContent = "⬇️ Logs";
+  btn.textContent = "iLogger";
   btn.draggable = false; // Prevent native HTML5 drag
 
   // Get saved position or use default
@@ -136,6 +136,7 @@ export function injectDownloadButton(
     zIndex: "99999",
     opacity: "0.8",
     width: "80px",
+    height: "40px",
     userSelect: "none",
     touchAction: "none", // Prevent touch scrolling on mobile
     WebkitUserSelect: "none",
@@ -161,41 +162,36 @@ export function injectDownloadButton(
   let startY = 0;
   let startLeft = 0;
   let startTop = 0;
+  let isUsingTouch = false; // Track if we're using touch vs mouse
 
-  const handleMouseDown = (e: MouseEvent) => {
-    // Only start drag on left mouse button
-    if (e.button !== 0) return;
-
+  const startDrag = (clientX: number, clientY: number) => {
     isDragging = true;
     hasDragged = false;
     btn.dataset.dragging = "true";
     btn.style.cursor = "grabbing";
     btn.style.opacity = "1";
 
-    startX = e.clientX;
-    startY = e.clientY;
+    startX = clientX;
+    startY = clientY;
     const rect = btn.getBoundingClientRect();
     startLeft = rect.left;
     startTop = rect.top;
-
-    e.preventDefault();
-    e.stopPropagation();
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const updateDrag = (clientX: number, clientY: number) => {
     if (!isDragging) return;
 
-    // Mark that we've dragged if mouse moved significantly
+    // Mark that we've dragged if moved significantly
     if (!hasDragged) {
-      const deltaX = Math.abs(e.clientX - startX);
-      const deltaY = Math.abs(e.clientY - startY);
+      const deltaX = Math.abs(clientX - startX);
+      const deltaY = Math.abs(clientY - startY);
       if (deltaX > 5 || deltaY > 5) {
         hasDragged = true;
       }
     }
 
-    const deltaX = e.clientX - startX;
-    const deltaY = e.clientY - startY;
+    const deltaX = clientX - startX;
+    const deltaY = clientY - startY;
 
     let newLeft = startLeft + deltaX;
     let newTop = startTop + deltaY;
@@ -212,7 +208,7 @@ export function injectDownloadButton(
     btn.style.top = `${newTop}px`;
   };
 
-  const handleMouseUp = (e: MouseEvent) => {
+  const endDrag = () => {
     if (isDragging) {
       const wasDragging = hasDragged;
       isDragging = false;
@@ -231,6 +227,120 @@ export function injectDownloadButton(
         }, 100);
       }
     }
+    isUsingTouch = false;
+  };
+
+  const handleMouseDown = (e: MouseEvent) => {
+    // Only start drag on left mouse button
+    if (e.button !== 0) return;
+    // Ignore if we're currently using touch
+    if (isUsingTouch) return;
+
+    startDrag(e.clientX, e.clientY);
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    // Ignore if we're using touch
+    if (isUsingTouch) return;
+    updateDrag(e.clientX, e.clientY);
+  };
+
+  const handleMouseUp = (e: MouseEvent) => {
+    // Ignore if we're using touch
+    if (isUsingTouch) return;
+    endDrag();
+  };
+
+  const handleTouchStart = (e: TouchEvent) => {
+    // Only handle single touch
+    if (e.touches.length !== 1) return;
+
+    isUsingTouch = true;
+    const touch = e.touches[0];
+    // Store initial touch position but don't start dragging yet
+    // Only start dragging if touch moves significantly
+    startX = touch.clientX;
+    startY = touch.clientY;
+    const rect = btn.getBoundingClientRect();
+    startLeft = rect.left;
+    startTop = rect.top;
+    hasDragged = false;
+    isDragging = false; // Ensure we start in non-dragging state
+
+    // Prevent default to avoid scrolling/selection, but we'll handle tap manually in touchend
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isUsingTouch) return;
+    // Only handle single touch
+    if (e.touches.length !== 1) return;
+
+    const touch = e.touches[0];
+
+    // Check if we've moved enough to start dragging
+    if (!isDragging) {
+      const deltaX = Math.abs(touch.clientX - startX);
+      const deltaY = Math.abs(touch.clientY - startY);
+      if (deltaX > 5 || deltaY > 5) {
+        // Start dragging now
+        isDragging = true;
+        hasDragged = true;
+        btn.dataset.dragging = "true";
+        btn.style.cursor = "grabbing";
+        btn.style.opacity = "1";
+      } else {
+        // Not enough movement yet, don't prevent default
+        return;
+      }
+    }
+
+    // We're dragging, update position
+    updateDrag(touch.clientX, touch.clientY);
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    if (!isUsingTouch) return;
+
+    // If we were dragging, end the drag
+    if (isDragging) {
+      endDrag();
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      // We weren't dragging, so this was a tap - trigger download directly
+      // Reset touch state first
+      isUsingTouch = false;
+      hasDragged = false;
+
+      // Manually trigger download for mobile (more reliable than waiting for click event)
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Use setTimeout to ensure state is reset before download
+      setTimeout(async () => {
+        await downloadLogs(storage, singleFile, getShowTimestamps);
+      }, 0);
+    }
+  };
+
+  const handleTouchCancel = (e: TouchEvent) => {
+    if (!isUsingTouch) return;
+    // If we were dragging, end it
+    if (isDragging) {
+      endDrag();
+    } else {
+      // Reset touch state
+      isUsingTouch = false;
+      hasDragged = false;
+    }
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   // Append button to DOM first
@@ -240,6 +350,12 @@ export function injectDownloadButton(
   btn.addEventListener("mousedown", handleMouseDown);
   document.addEventListener("mousemove", handleMouseMove);
   document.addEventListener("mouseup", handleMouseUp);
+
+  // Touch event listeners for mobile support
+  btn.addEventListener("touchstart", handleTouchStart, { passive: false });
+  document.addEventListener("touchmove", handleTouchMove, { passive: false });
+  document.addEventListener("touchend", handleTouchEnd, { passive: false });
+  document.addEventListener("touchcancel", handleTouchCancel, { passive: false });
 
   // Handle window resize to keep button within bounds
   const onWindowResize = () => {
@@ -289,6 +405,10 @@ export function injectDownloadButton(
     btn.removeEventListener("mousedown", handleMouseDown);
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
+    btn.removeEventListener("touchstart", handleTouchStart);
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+    document.removeEventListener("touchcancel", handleTouchCancel);
     window.removeEventListener("resize", onWindowResize);
     btn.removeEventListener("click", handleClick);
   };
