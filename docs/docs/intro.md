@@ -68,6 +68,19 @@ That's it! You now have a logger that:
 - Allows you to download logs via a floating button
 - Supports multiple logger instances for organized logging
 
+## Visualizing Your Logs
+
+After downloading your logs, you can visualize them using the **iLogger Visualizer**:
+
+**[🌐 Log Visualizer](https://interactive-logger-visualizer.vercel.app/)**
+
+The visualizer allows you to:
+- Upload your exported `illogger-logs.zip` file
+- View logs in a timeline view with each logger in its own column
+- Navigate through sessions
+- Filter loggers and analyze log patterns
+- See logs positioned by time for easy debugging
+
 ## Next Steps
 
 - Learn about [Core Concepts](./core-concepts) to understand how Interactive Logger works

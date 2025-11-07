@@ -6,6 +6,12 @@ An in-browser logger with persistent storage and downloadable logs. Store logs i
 
 Try Interactive Logger in action: **[https://interactive-logger-demo.vercel.app/](https://interactive-logger-demo.vercel.app/)**
 
+## 📊 Log Visualizer
+
+Visualize your exported logs in a timeline view: **[https://interactive-logger-visualizer.vercel.app/](https://interactive-logger-visualizer.vercel.app/)**
+
+The Log Visualizer is a separate tool that allows you to upload and visualize logs exported from Interactive Logger. It provides timeline views, session navigation, logger filtering, and more.
+
 ## Features
 
 - **Persistent Storage**: Logs are stored in IndexedDB and persist across page reloads

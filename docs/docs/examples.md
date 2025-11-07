@@ -85,6 +85,26 @@ logger.setConsoleLogging(true);
 await logger.setMaxLogs(20000);
 ```
 
+## Visualizing Logs
+
+After downloading logs from Interactive Logger, you can visualize them using the **iLogger Visualizer**:
+
+**[🌐 Log Visualizer](https://interactive-logger-visualizer.vercel.app/)**
+
+### Using the Visualizer
+
+1. **Download logs** from your application using Interactive Logger's download functionality
+2. **Upload the ZIP file** to the visualizer (drag and drop or browse)
+3. **View logs** in a timeline view with:
+   - Each logger in its own column
+   - Logs positioned by timestamp
+   - Session-based navigation
+   - Logger filtering
+   - Collapsible logger sections
+   - Pinned column headers
+
+The visualizer supports both single-file and multi-file log formats exported from Interactive Logger.
+
 ## Console Interception
 
 ### Capture All Console Output

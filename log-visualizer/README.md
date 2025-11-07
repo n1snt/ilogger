@@ -2,6 +2,10 @@
 
 A React application to visualize logs exported from iLogger by time. Upload a zip file containing log files to see all logs displayed in a timeline view, with each logger shown in its own column.
 
+## 🌐 Live Demo
+
+Try the visualizer online: **[https://interactive-logger-visualizer.vercel.app/](https://interactive-logger-visualizer.vercel.app/)**
+
 ## Features
 
 - **Upload Zip Files**: Drag and drop or browse to upload `illogger-logs.zip` files

@@ -44,6 +44,21 @@ Product teams can benefit from:
 - **Analytics**: Analyze logs to understand user behavior and identify pain points
 - **Support**: Support teams can request log files from users to diagnose issues
 
+## How can I visualize my exported logs?
+
+After downloading logs from Interactive Logger, you can visualize them using the **iLogger Visualizer**:
+
+**[🌐 Log Visualizer](https://interactive-logger-visualizer.vercel.app/)**
+
+The visualizer provides:
+- **Timeline View**: See all logs chronologically across multiple loggers
+- **Session Navigation**: Browse through different sessions
+- **Logger Filtering**: Toggle loggers on/off to focus on specific streams
+- **Column Layout**: Each logger gets its own column with color coding
+- **Time-based Positioning**: Logs are positioned by timestamp for easy analysis
+
+Simply upload your exported `illogger-logs.zip` file to get started!
+
 ## How does Interactive Logger compare to other logging solutions?
 
 ### vs. Console Logging
