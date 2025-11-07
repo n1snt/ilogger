@@ -34,7 +34,7 @@
     "interactive"
   ],
   "author": "Nishant",
-  "license": "CC-BY-NC-4.0",
+  "license": "MIT",
   "dependencies": {
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",

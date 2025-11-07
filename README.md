@@ -674,7 +674,7 @@ Compatible with:
 
 ## License
 
-Attribution-NonCommercial 4.0 International
+MIT
 
 ## Author
 
