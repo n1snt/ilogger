@@ -83,6 +83,11 @@ const config: Config = {
           label: 'API Reference',
         },
         {
+          href: 'https://interactive-logger-demo.vercel.app/',
+          label: '🚀 Demo',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/n1snt/interactive-logger',
           label: 'GitHub',
           position: 'right',
