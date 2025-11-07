@@ -1,8 +1,11 @@
 .session-timeline-view {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 280px);
+    min-height: 500px;
     background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .timeline-controls {
@@ -79,21 +82,29 @@
     flex: 1;
     overflow: auto;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 .timeline-columns-wrapper {
     display: flex;
     position: relative;
     min-height: 100%;
+    width: max-content;
+    min-width: 100%;
+    box-sizing: border-box;
 }
 
 .timeline-column {
     flex: 1;
     min-width: 300px;
+    max-width: 100%;
     border-right: 1px solid #333;
     display: flex;
     flex-direction: column;
     background: #1e1e1e;
+    overflow: hidden;
 }
 
 /* Different border colors for each column */
@@ -252,6 +263,10 @@
     position: relative;
     flex: 1;
     min-height: 100%;
+    overflow: visible;
+    width: 100%;
+    padding-bottom: 50px;
+    box-sizing: border-box;
 }
 
 .timeline-entry {
@@ -265,13 +280,14 @@
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s;
-    overflow: visible;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 4px;
     word-wrap: break-word;
     z-index: 1;
     min-width: 0;
+    max-width: calc(100% - 10px);
     box-sizing: border-box;
 }
 

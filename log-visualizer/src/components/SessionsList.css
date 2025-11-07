@@ -1,8 +1,10 @@
 .sessions-list {
     padding: 20px;
+    padding-bottom: 40px;
     max-width: 1400px;
     margin: 0 auto;
     min-height: calc(100vh - 60px);
+    box-sizing: border-box;
 }
 
 .sessions-header {
@@ -22,10 +24,49 @@
     font-size: 14px;
 }
 
+.view-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #444;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #aaa;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: -2px;
+}
+
+.tab-button:hover {
+    color: #e0e0e0;
+    background: #2a2a2a;
+}
+
+.tab-button.active {
+    color: #4a9eff;
+    border-bottom-color: #4a9eff;
+    background: #2a2a2a;
+}
+
 .sessions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.sessions-list .session-timeline-view {
+    margin-top: 0;
+    height: calc(100vh - 320px);
+    max-height: calc(100vh - 320px);
 }
 
 .session-card {

@@ -119,10 +119,23 @@ export function SessionTimelineView({ entries, loggerNames, sessionStartTime }: 
             });
         });
 
+        // Add extra padding at the bottom to ensure last entry is fully visible
+        // Need to account for the tallest entry that might be at the last position
+        let maxEntryHeight = 0;
+        entriesByLogger.forEach((loggerEntries) => {
+            loggerEntries.forEach(entry => {
+                const messageLines = entry.message.split('\n').length;
+                const entryHeight = Math.max(40, messageLines * 20 + 10);
+                maxEntryHeight = Math.max(maxEntryHeight, entryHeight);
+            });
+        });
+
+        const bottomPadding = Math.max(50, maxEntryHeight + 20);
+
         return {
             globalTimestampPositions: positions,
             maxStackHeights: stackHeights,
-            totalHeight: Math.max(height, 100)
+            totalHeight: Math.max(height + bottomPadding, 100)
         };
     }, [entriesByLogger]);
 
@@ -239,16 +252,23 @@ export function SessionTimelineView({ entries, loggerNames, sessionStartTime }: 
 
             <div className="timeline-main">
                 <div className="timeline-columns-container">
-                    <div className="timeline-columns-wrapper" style={{ height: totalHeight }}>
+                    <div className="timeline-columns-wrapper" style={{ minHeight: totalHeight }}>
                         {Array.from(entriesByLogger.entries()).map(([loggerName, loggerEntries], index) => {
                             const positions = calculatePositions(loggerEntries, globalTimestampPositions);
+
+                            // Calculate the actual height needed for this column
+                            let columnMaxBottom = 0;
+                            positions.forEach(({ top, height }) => {
+                                columnMaxBottom = Math.max(columnMaxBottom, top + height);
+                            });
+
                             return (
                                 <div key={loggerName} className="timeline-column" data-column-index={index}>
                                     <div className="timeline-column-header">
                                         <span className="logger-name">{loggerName}</span>
                                         <span className="entry-count-badge">{loggerEntries.length}</span>
                                     </div>
-                                    <div className="timeline-column-content">
+                                    <div className="timeline-column-content" style={{ minHeight: columnMaxBottom + 50 }}>
                                         {loggerEntries.map((entry, index) => {
                                             const position = positions.get(entry);
                                             if (!position) return null;

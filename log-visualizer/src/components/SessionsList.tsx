@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { ParsedLogs } from '../utils/logParser';
+import { SessionTimelineView } from './SessionTimelineView';
 import './SessionsList.css';
 
 interface SessionsListProps {
@@ -16,6 +17,8 @@ interface Session {
 }
 
 export function SessionsList({ logs }: SessionsListProps) {
+    const [activeView, setActiveView] = useState<'list' | 'timeline'>('list');
+
     const sessions = useMemo(() => {
         const sessionList: Session[] = [];
         let currentSession: Session | null = null;
@@ -105,6 +108,9 @@ export function SessionsList({ logs }: SessionsListProps) {
         }
     };
 
+    // Get the first session's start time for timeline view
+    const firstSessionStartTime = sessions.length > 0 ? sessions[0].startTime : null;
+
     return (
         <div className="sessions-list">
             <div className="sessions-header">
@@ -116,44 +122,67 @@ export function SessionsList({ logs }: SessionsListProps) {
                 </div>
             </div>
 
-            <div className="sessions-grid">
-                {sessions.map((session) => (
-                    <Link
-                        key={session.id}
-                        to={`/sessions/${session.id}`}
-                        className="session-card"
-                    >
-                        <div className="session-card-header">
-                            <h3>Session {session.id}</h3>
-                            <span className="session-entry-count">{session.entryCount} entries</span>
-                        </div>
-                        <div className="session-card-body">
-                            <div className="session-info-row">
-                                <span className="session-label">Start:</span>
-                                <span className="session-value">{formatTime(session.startTime)}</span>
-                            </div>
-                            <div className="session-info-row">
-                                <span className="session-label">End:</span>
-                                <span className="session-value">{formatTime(session.endTime)}</span>
-                            </div>
-                            <div className="session-info-row">
-                                <span className="session-label">Duration:</span>
-                                <span className="session-value">
-                                    {formatDuration(session.startTime, session.endTime)}
-                                </span>
-                            </div>
-                            <div className="session-info-row">
-                                <span className="session-label">Loggers:</span>
-                                <span className="session-value">
-                                    {session.loggerNames.length > 0
-                                        ? session.loggerNames.join(', ')
-                                        : 'None'}
-                                </span>
-                            </div>
-                        </div>
-                    </Link>
-                ))}
+            <div className="view-tabs">
+                <button
+                    className={`tab-button ${activeView === 'list' ? 'active' : ''}`}
+                    onClick={() => setActiveView('list')}
+                >
+                    List View
+                </button>
+                <button
+                    className={`tab-button ${activeView === 'timeline' ? 'active' : ''}`}
+                    onClick={() => setActiveView('timeline')}
+                >
+                    Timeline View
+                </button>
             </div>
+
+            {activeView === 'list' ? (
+                <div className="sessions-grid">
+                    {sessions.map((session) => (
+                        <Link
+                            key={session.id}
+                            to={`/sessions/${session.id}`}
+                            className="session-card"
+                        >
+                            <div className="session-card-header">
+                                <h3>Session {session.id}</h3>
+                                <span className="session-entry-count">{session.entryCount} entries</span>
+                            </div>
+                            <div className="session-card-body">
+                                <div className="session-info-row">
+                                    <span className="session-label">Start:</span>
+                                    <span className="session-value">{formatTime(session.startTime)}</span>
+                                </div>
+                                <div className="session-info-row">
+                                    <span className="session-label">End:</span>
+                                    <span className="session-value">{formatTime(session.endTime)}</span>
+                                </div>
+                                <div className="session-info-row">
+                                    <span className="session-label">Duration:</span>
+                                    <span className="session-value">
+                                        {formatDuration(session.startTime, session.endTime)}
+                                    </span>
+                                </div>
+                                <div className="session-info-row">
+                                    <span className="session-label">Loggers:</span>
+                                    <span className="session-value">
+                                        {session.loggerNames.length > 0
+                                            ? session.loggerNames.join(', ')
+                                            : 'None'}
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            ) : (
+                <SessionTimelineView
+                    entries={logs.entries}
+                    loggerNames={logs.loggerNames}
+                    sessionStartTime={firstSessionStartTime}
+                />
+            )}
         </div>
     );
 }
