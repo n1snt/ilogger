@@ -88,6 +88,11 @@ const config: Config = {
           position: 'right',
         },
         {
+          href: 'https://www.npmjs.com/package/interactive-logger',
+          label: 'npm',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/n1snt/interactive-logger',
           label: 'GitHub',
           position: 'right',
