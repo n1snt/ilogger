@@ -151,7 +151,7 @@ logger.injectButton({
 });
 ```
 
-See the [API Reference](../api-reference/inject-button) for more customization options.
+See the [API Reference](api-reference/inject-button) for more customization options.
 
 ## How do I clear logs?
 

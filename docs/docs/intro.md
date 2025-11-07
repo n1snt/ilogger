@@ -73,4 +73,4 @@ That's it! You now have a logger that:
 - Learn about [Core Concepts](./core-concepts) to understand how Interactive Logger works
 - Check out [Examples](./examples) for more detailed usage scenarios
 - Explore the [Architecture](./architecture) to understand the internals
-- Browse the [API Reference](../api-reference/interactive-logger) for detailed API documentation
+- Browse the [API Reference](api-reference/interactive-logger) for detailed API documentation
