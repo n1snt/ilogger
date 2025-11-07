@@ -1,6 +1,6 @@
 import { InteractiveLogger, getLogger } from "interactive-logger";
 
-// Initialize iLogger
+// Initialize Interactive Logger
 const logger = InteractiveLogger({ maxLogs: 500 });
 // Don't auto-inject button - let user control it via UI
 logger.injectButton();
@@ -44,17 +44,17 @@ updateStats();
 
 // Basic logging functions
 window.logInfo = () => {
-    appLogger.writeLog("ℹ️ Info: This is an informational message");
+    appLogger.writeLog("Info: This is an informational message");
     updateStats();
 };
 
 window.logWarning = () => {
-    appLogger.writeLog("⚠️ Warning: This is a warning message");
+    appLogger.writeLog("Warning: This is a warning message");
     updateStats();
 };
 
 window.logError = () => {
-    appLogger.writeLog("❌ Error: This is an error message");
+    appLogger.writeLog("Error: This is an error message");
     updateStats();
 };
 
@@ -68,13 +68,13 @@ window.logObject = () => {
             notifications: true,
         },
     };
-    appLogger.writeLog("📦 Object logged:", obj);
+    appLogger.writeLog("Object logged:", obj);
     updateStats();
 };
 
 window.logArray = () => {
     const arr = ["apple", "banana", "cherry", "date", "elderberry"];
-    appLogger.writeLog("📋 Array logged:", arr);
+    appLogger.writeLog("Array logged:", arr);
     updateStats();
 };
 
@@ -102,14 +102,14 @@ window.logToAll = () => {
 // Button management functions
 window.injectDownloadButton = () => {
     logger.injectButton();
-    appLogger.writeLog("🔘 Download button injected");
+    appLogger.writeLog("Download button injected");
     updateStats();
     updateButtonState();
 };
 
 window.withdrawDownloadButton = () => {
     logger.withdrawButton();
-    appLogger.writeLog("🔘 Download button withdrawn");
+    appLogger.writeLog("Download button withdrawn");
     updateStats();
     updateButtonState();
 };
@@ -140,10 +140,10 @@ window.toggleConsoleInterception = () => {
     const enabled = document.getElementById("consoleInterception").checked;
     if (enabled) {
         logger.enableConsoleInterception();
-        appLogger.writeLog("🖥️ Console interception enabled - all console output will be captured");
+        appLogger.writeLog("Console interception enabled - all console output will be captured");
     } else {
         logger.disableConsoleInterception();
-        appLogger.writeLog("🖥️ Console interception disabled");
+        appLogger.writeLog("Console interception disabled");
     }
     updateStats();
 };
@@ -155,14 +155,14 @@ window.testConsoleOutput = () => {
     console.warn("This is a console.warn message");
     console.error("This is a console.error message");
     console.debug("This is a console.debug message");
-    appLogger.writeLog("📝 Test console output sent - check logs if interception is enabled");
+    appLogger.writeLog("Test console output sent - check logs if interception is enabled");
     updateStats();
 };
 
 window.clearLogs = async () => {
     if (confirm("Are you sure you want to clear all logs?")) {
         await logger.clear();
-        appLogger.writeLog("🗑️ All logs cleared");
+        appLogger.writeLog("All logs cleared");
         updateStats();
     }
 };
@@ -215,7 +215,7 @@ window.simulateUserActions = () => {
 
     actions.forEach((action, index) => {
         setTimeout(() => {
-            uiLogger.writeLog(`👤 ${action}`);
+            uiLogger.writeLog(action);
             updateStats();
         }, index * 400);
     });
@@ -223,13 +223,13 @@ window.simulateUserActions = () => {
 
 window.simulateWorkflow = () => {
     // Simulate a complete user workflow
-    setTimeout(() => authLogger.writeLog("🔐 User attempting to login"), 0);
+    setTimeout(() => authLogger.writeLog("User attempting to login"), 0);
     setTimeout(
         () => apiLogger.writeLog("POST /api/auth/login - Status: 200"),
         300,
     );
-    setTimeout(() => authLogger.writeLog("✅ Login successful"), 600);
-    setTimeout(() => uiLogger.writeLog("👤 User navigated to dashboard"), 900);
+    setTimeout(() => authLogger.writeLog("Login successful"), 600);
+    setTimeout(() => uiLogger.writeLog("User navigated to dashboard"), 900);
     setTimeout(
         () => apiLogger.writeLog("GET /api/user/profile - Status: 200"),
         1200,
@@ -238,11 +238,11 @@ window.simulateWorkflow = () => {
         () => apiLogger.writeLog("GET /api/dashboard/data - Status: 200"),
         1500,
     );
-    setTimeout(() => uiLogger.writeLog("📊 Dashboard data loaded"), 1800);
-    setTimeout(() => uiLogger.writeLog("👤 User clicked on item #42"), 2100);
+    setTimeout(() => uiLogger.writeLog("Dashboard data loaded"), 1800);
+    setTimeout(() => uiLogger.writeLog("User clicked on item #42"), 2100);
     setTimeout(() => apiLogger.writeLog("GET /api/items/42 - Status: 200"), 2400);
     setTimeout(
-        () => appLogger.writeLog("✨ Workflow simulation completed"),
+        () => appLogger.writeLog("Workflow simulation completed"),
         2700,
     );
 
@@ -254,13 +254,13 @@ window.simulateWorkflow = () => {
 updateButtonState();
 
 // Log initial message
-appLogger.writeLog("🚀 iLogger demo initialized");
-appLogger.writeLog(`📅 Session started at ${new Date().toLocaleString()}`);
+appLogger.writeLog("Interactive Logger demo initialized");
+appLogger.writeLog(`Session started at ${new Date().toLocaleString()}`);
 
 // Log some initial activity
 setTimeout(() => {
-    apiLogger.writeLog("🌐 API logger initialized");
-    uiLogger.writeLog("🎨 UI logger initialized");
-    authLogger.writeLog("🔒 Auth logger initialized");
+    apiLogger.writeLog("API logger initialized");
+    uiLogger.writeLog("UI logger initialized");
+    authLogger.writeLog("Auth logger initialized");
     updateStats();
 }, 100);

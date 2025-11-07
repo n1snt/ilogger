@@ -135,7 +135,7 @@ export function injectDownloadButton(
 
   const btn = document.createElement("button");
   btn.id = "illogger-download-btn";
-  btn.textContent = buttonOptions?.text ?? "iLogger";
+  btn.textContent = buttonOptions?.text ?? "Interactive Logger";
   btn.draggable = false; // Prevent native HTML5 drag
 
   // Get saved position or use default

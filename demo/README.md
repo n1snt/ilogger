@@ -1,6 +1,6 @@
-# iLogger Demo
+# Interactive Logger Demo
 
-This is a demo project showcasing the features of **iLogger** (Interactive Logger) - an in-browser logger with persistent session storage and downloadable logs.
+This is a demo project showcasing the features of **Interactive Logger** - an in-browser logger with persistent storage and downloadable logs.
 
 ## Features Demonstrated
 
@@ -20,7 +20,7 @@ This is a demo project showcasing the features of **iLogger** (Interactive Logge
 
 ### Installation
 
-1. First, make sure the main iLogger package is built:
+1. First, make sure the main Interactive Logger package is built:
    ```bash
    cd ..
    npm install
@@ -70,7 +70,7 @@ The demo includes interactive buttons to test various logging scenarios:
 
 ## How It Works
 
-1. **Initialization**: The demo initializes iLogger and creates multiple logger instances
+1. **Initialization**: The demo initializes Interactive Logger and creates multiple logger instances
 2. **Logging**: Each button triggers different logging scenarios
 3. **Storage**: All logs are stored in sessionStorage (compressed with LZ-String)
 4. **Download**: Click the "⬇️ Logs" button in the bottom-right to download all logs as a ZIP file
@@ -86,5 +86,5 @@ The demo includes interactive buttons to test various logging scenarios:
 ## Notes
 
 - Logs are stored in **sessionStorage**, so they persist across page reloads but are cleared when the browser tab is closed
-- The download button is automatically injected by iLogger
+- The download button is automatically injected by Interactive Logger
 - Each logger instance creates a separate log file in the downloaded ZIP

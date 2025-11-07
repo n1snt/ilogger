@@ -1,7 +1,7 @@
 {
     "name": "ilogger-demo",
     "version": "1.0.0",
-    "description": "Demo project for iLogger - Interactive Logger",
+    "description": "Demo project for Interactive Logger",
     "type": "module",
     "scripts": {
         "dev": "vite",

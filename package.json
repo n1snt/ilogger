@@ -1,7 +1,7 @@
 {
   "name": "interactive-logger",
   "version": "1.0.1",
-  "description": "In-browser logger with persistent session storage and downloadable logs",
+  "description": "In-browser logger with persistent storage and downloadable logs",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

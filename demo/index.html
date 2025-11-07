@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iLogger Demo</title>
+    <title>Interactive Logger Demo</title>
     <style>
         * {
             margin: 0;
@@ -13,31 +13,36 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1e8ed;
         }
 
         h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2.5em;
+            color: #1a202c;
+            margin-bottom: 8px;
+            font-size: 2.25em;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1em;
+            color: #718096;
+            margin-bottom: 32px;
+            font-size: 1.05em;
+            font-weight: 400;
         }
 
         .controls {
@@ -48,64 +53,83 @@
         }
 
         .control-group {
-            background: #f8f9fa;
-            padding: 20px;
+            background: #ffffff;
+            padding: 24px;
             border-radius: 8px;
-            border: 2px solid #e9ecef;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .control-group:hover {
+            border-color: #cbd5e0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .control-group h3 {
-            color: #495057;
-            margin-bottom: 15px;
-            font-size: 1.1em;
+            color: #2d3748;
+            margin-bottom: 16px;
+            font-size: 1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
         }
 
         button {
-            background: #667eea;
+            background: #4299e1;
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             width: 100%;
             margin-bottom: 8px;
+            letter-spacing: 0.01em;
         }
 
         button:hover {
-            background: #5568d3;
+            background: #3182ce;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 2px 8px rgba(66, 153, 225, 0.3);
         }
 
         button:active {
             transform: translateY(0);
         }
 
-        button.secondary {
-            background: #6c757d;
+        button:disabled {
+            background: #cbd5e0;
+            color: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        button.secondary:hover {
-            background: #5a6268;
+        button.secondary {
+            background: #718096;
+        }
+
+        button.secondary:hover:not(:disabled) {
+            background: #4a5568;
         }
 
         button.danger {
-            background: #dc3545;
+            background: #e53e3e;
         }
 
-        button.danger:hover {
-            background: #c82333;
+        button.danger:hover:not(:disabled) {
+            background: #c53030;
         }
 
         button.success {
-            background: #28a745;
+            background: #38a169;
         }
 
-        button.success:hover {
-            background: #218838;
+        button.success:hover:not(:disabled) {
+            background: #2f855a;
         }
 
         .input-group {
@@ -123,17 +147,20 @@
         input,
         select {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #dee2e6;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e0;
             border-radius: 6px;
             font-size: 14px;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #2d3748;
         }
 
         input:focus,
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
         }
 
         .checkbox-group {
@@ -149,17 +176,31 @@
         }
 
         .info {
-            background: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+            background: #ebf8ff;
+            border-left: 3px solid #4299e1;
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 24px;
         }
 
         .info p {
-            color: #0d47a1;
-            margin: 5px 0;
-            font-size: 0.95em;
+            color: #2c5282;
+            margin: 6px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .info p:first-child {
+            margin-top: 0;
+        }
+
+        .info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info strong {
+            color: #2d3748;
+            font-weight: 600;
         }
 
         .stats {
@@ -170,42 +211,54 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
+            background: #ffffff;
+            color: #2d3748;
+            padding: 24px;
             border-radius: 8px;
             text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #cbd5e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .stat-card h4 {
-            font-size: 0.9em;
-            opacity: 0.9;
-            margin-bottom: 8px;
+            font-size: 0.75em;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
         .stat-card .value {
-            font-size: 2em;
-            font-weight: bold;
+            font-size: 2.25em;
+            font-weight: 700;
+            color: #1a202c;
+            letter-spacing: -0.02em;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>🚀 iLogger Demo</h1>
-        <p class="subtitle">Interactive Logger with Persistent Session Storage</p>
+        <h1>Interactive Logger Demo</h1>
+        <p class="subtitle">Interactive Logger with Persistent Storage</p>
 
         <div class="info">
-            <p><strong>💡 Tip:</strong> All logs are stored in IndexedDB and persist across page reloads.</p>
-            <p><strong>📥 Download:</strong> Use the "Inject Download Button" control to add a floating download button.
+            <p><strong>Tip:</strong> All logs are stored in IndexedDB and persist across page reloads.</p>
+            <p><strong>Download:</strong> Use the "Inject Download Button" control to add a floating download button.
                 Click it to download all logs as a ZIP file.</p>
-            <p><strong>🖥️ Console Capture:</strong> Enable "Capture Console Output" to automatically log all
+            <p><strong>Console Capture:</strong> Enable "Capture Console Output" to automatically log all
                 console.log, console.error, console.warn, etc. to the log file.</p>
         </div>
 
         <div class="controls">
             <div class="control-group">
-                <h3>📝 Basic Logging</h3>
+                <h3>Basic Logging</h3>
                 <button onclick="logInfo()">Log Info Message</button>
                 <button onclick="logWarning()">Log Warning</button>
                 <button onclick="logError()">Log Error</button>
@@ -215,7 +268,7 @@
             </div>
 
             <div class="control-group">
-                <h3>🎯 Multiple Loggers</h3>
+                <h3>Multiple Loggers</h3>
                 <div class="input-group">
                     <label>Logger Name:</label>
                     <select id="loggerSelect">
@@ -230,14 +283,14 @@
             </div>
 
             <div class="control-group">
-                <h3>🔘 Download Button</h3>
+                <h3>Download Button</h3>
                 <button onclick="injectDownloadButton()" class="success" id="injectBtn">Inject Download Button</button>
                 <button onclick="withdrawDownloadButton()" class="secondary" id="withdrawBtn" disabled>Withdraw Download
                     Button</button>
             </div>
 
             <div class="control-group">
-                <h3>⚙️ Configuration</h3>
+                <h3>Configuration</h3>
                 <div class="checkbox-group">
                     <input type="checkbox" id="consoleLogging" onchange="toggleConsoleLogging()">
                     <label for="consoleLogging">Enable Console Logging</label>
@@ -251,7 +304,7 @@
             </div>
 
             <div class="control-group">
-                <h3>🔄 Simulate Activity</h3>
+                <h3>Simulate Activity</h3>
                 <button onclick="simulateAPI()" class="success">Simulate API Calls</button>
                 <button onclick="simulateUserActions()" class="success">Simulate User Actions</button>
                 <button onclick="simulateWorkflow()" class="success">Simulate Full Workflow</button>

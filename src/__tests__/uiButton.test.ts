@@ -353,7 +353,7 @@ describe('uiButton', () => {
 
             const btn = document.getElementById('illogger-download-btn');
             expect(btn).toBeTruthy();
-            expect(btn?.textContent).toBe('iLogger');
+            expect(btn?.textContent).toBe('Interactive Logger');
         });
 
         it('should not create duplicate buttons', () => {

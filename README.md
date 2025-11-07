@@ -1,6 +1,6 @@
-# iLogger
+# Interactive Logger
 
-**iLogger (Interactive Logger)** - An in-browser logger with persistent session storage and downloadable logs. Store logs in IndexedDB, manage multiple logger instances, and download logs as files.
+**Interactive Logger** - An in-browser logger with persistent storage and downloadable logs. Store logs in IndexedDB, manage multiple logger instances, and download logs as files.
 
 ## Features
 
@@ -27,7 +27,7 @@ npm install interactive-logger
 ```javascript
 import { InteractiveLogger, getLogger } from 'interactive-logger';
 
-// Initialize iLogger with options
+// Initialize Interactive Logger with options
 const logger = InteractiveLogger({
   maxLogs: 5000,      // Maximum number of logs to store (default: 5000)
   singleFile: false,  // Download as single file or ZIP (default: false)
@@ -285,7 +285,7 @@ You can customize the download button's appearance and text using the `ButtonOpt
 
 ```typescript
 interface ButtonOptions {
-  text?: string;              // Button text (default: "iLogger")
+  text?: string;              // Button text (default: "Interactive Logger")
   style?: ButtonStyleOptions; // CSS style properties
 }
 
@@ -520,7 +520,7 @@ appLogger.setEnabled(false); // Disable this instance only
 
 ### IndexedDB Storage
 
-iLogger uses IndexedDB for persistent storage with the following structure:
+Interactive Logger uses IndexedDB for persistent storage with the following structure:
 
 - **Database Name**: `__illogger__` (configurable via StorageAdapter)
 - **Object Store**: `logs`
@@ -654,7 +654,7 @@ logger.withdrawButton();
 
 ## Browser Compatibility
 
-iLogger requires:
+Interactive Logger requires:
 - **IndexedDB support** (all modern browsers)
 - **ES2019+ JavaScript features**
 - **File API** (for downloads)
