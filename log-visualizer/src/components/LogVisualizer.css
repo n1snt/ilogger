@@ -1,0 +1,222 @@
+.log-visualizer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+}
+
+.visualizer-controls {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    background: #2a2a2a;
+    border-bottom: 1px solid #444;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.logger-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.logger-selector h3 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.logger-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.logger-checkbox input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.time-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-controls label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.time-controls input[type="range"] {
+    width: 200px;
+}
+
+.time-range {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    color: #aaa;
+}
+
+.visualizer-main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.timeline-header {
+    width: 150px;
+    background: #252525;
+    border-right: 1px solid #444;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.timeline-marker-container {
+    position: relative;
+    min-height: 100%;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    height: 1px;
+}
+
+.timeline-marker-line {
+    width: 10px;
+    height: 1px;
+    background: #666;
+    margin-right: 5px;
+}
+
+.timeline-marker-label {
+    font-size: 10px;
+    color: #888;
+    white-space: nowrap;
+}
+
+.columns-container {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+.columns-wrapper {
+    display: flex;
+    position: relative;
+    min-height: 100%;
+}
+
+.log-column {
+    flex: 1;
+    min-width: 300px;
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+}
+
+.log-column-header {
+    position: sticky;
+    top: 0;
+    background: #2a2a2a;
+    padding: 10px;
+    font-weight: 600;
+    border-bottom: 2px solid #444;
+    z-index: 10;
+    text-align: center;
+}
+
+.log-column-content {
+    position: relative;
+    flex: 1;
+    min-height: 100%;
+}
+
+.log-entry {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    padding: 4px 8px;
+    margin: 2px 0;
+    background: #2a2a2a;
+    border-left: 3px solid #4a9eff;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.log-entry:hover {
+    background: #333;
+    border-left-color: #6ab4ff;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.log-entry.separator {
+    background: #3a2a2a;
+    border-left-color: #ff6a4a;
+    font-weight: 600;
+}
+
+.log-entry.separator:hover {
+    background: #4a3a3a;
+    border-left-color: #ff8a6a;
+}
+
+.log-entry-time {
+    font-size: 10px;
+    color: #888;
+    white-space: nowrap;
+}
+
+.log-entry-message {
+    font-size: 11px;
+    color: #e0e0e0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+/* Scrollbar styling */
+.timeline-header::-webkit-scrollbar,
+.columns-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.timeline-header::-webkit-scrollbar-track,
+.columns-container::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.timeline-header::-webkit-scrollbar-thumb,
+.columns-container::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
+.timeline-header::-webkit-scrollbar-thumb:hover,
+.columns-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
