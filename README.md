@@ -2,6 +2,10 @@
 
 An in-browser logger with persistent storage and downloadable logs. Store logs in IndexedDB, manage multiple logger instances, and download logs as files.
 
+## 🚀 Live Demo
+
+Try Interactive Logger in action: **[https://interactive-logger-demo.vercel.app/](https://interactive-logger-demo.vercel.app/)**
+
 ## Features
 
 - **Persistent Storage**: Logs are stored in IndexedDB and persist across page reloads
